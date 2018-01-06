@@ -1,0 +1,79 @@
+
+            <div *ngIf="joinned; else joinroom">
+                <div >
+                    <span></span> {{ msgData.room }}
+                    <div>
+                        <button type="button" (click)="logout()">
+                            Logout
+                        </button>
+                    </div>
+                </div>
+                <div #scrollMe>
+                    <ul>
+                        <li *ngFor="let c of chats">
+                          <div  *ngIf="c.nickname===msgData.nickname; else rightchat">
+                            <span >
+                              <img src="http://placehold.it/50/55C1E7/fff&text=ME" alt="User Avatar" />
+                            </span>
+                            <div>
+                                <div >
+                                    <strong >{{ c.nickname }}</strong> <small>
+                                        <span ></span>{{ c.updated_at | date: 'short' }}</small>
+                                </div>
+                                <p>{{ c.message }}</p>
+                            </div>
+                          </div>
+                          <ng-template #rightchat>
+                            <div >
+                              <span >
+                                <img src="http://placehold.it/50/FA6F57/fff&text=U" alt="User Avatar"/>
+                              </span>
+                              <div>
+                                  <div>
+                                      <small><span ></span>{{ c.updated_at | date: 'small' }}</small>
+                                      <strong>{{ c.nickname }}</strong>
+                                  </div>
+                                  <p>{{ c.message }}</p>
+                              </div>
+                            </div>
+                          </ng-template>
+                        </li>
+                    </ul>
+                </div>
+                <div>
+                  <form (ngSubmit)="sendMessage()" #msgForm="ngForm">
+                    <div >
+                        <input type="hidden" [(ngModel)]="msgData.room" name="room" />
+                        <input type="hidden" [(ngModel)]="msgData.nickname" name="nickname" />
+                        <input id="btn-input" type="text" [(ngModel)]="msgData.message" name="message" placeholder="Type your message here..." required="" />
+                        <span >
+                            <button  id="btn-chat" [disabled]="!msgForm.form.valid">
+                                Send</button>
+                        </span>
+                    </div>
+                  </form>
+                </div>
+            </div>
+            <ng-template #joinroom>
+              <div>
+                <div >
+                  <h1>Select Chat Room</h1>
+                  <form (ngSubmit)="joinRoom()" #joinForm="ngForm">
+                    <div>
+                      <input type="text"  [(ngModel)]="newUser.nickname" name="nickname" placeholder="Nickname" required="" />
+                    </div>
+                    <div >
+                      <select  [(ngModel)]="newUser.room" name="room" required="">
+                        <option>Select Room</option>
+                        <option value="Javascript">Javascript</option>
+                        <option value="Java">Java</option>
+                        <option value="Python">Python</option>
+                      </select>
+                    </div>
+                    <div >
+                      <button type="submit"  [disabled]="!joinForm.form.valid">Join</button>
+                    </div>
+                  </form>
+                </div>
+              </div>
+            </ng-template>
